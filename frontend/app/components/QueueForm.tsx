@@ -1,0 +1,63 @@
+"use client";
+
+import { redirect } from "next/navigation";
+import { useState } from "react";
+
+export default function QueueForm() {
+  const [name, setName] = useState("");
+  const [people, setPeople] = useState("1");
+
+  const onJoin = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch(
+      `http://localhost:8000/join_queue?name=${name}&people=${people}`,
+      {
+        method: "POST",
+      },
+    );
+
+    const data = await response.json();
+    console.log(data);
+    redirect(`/guest/id=${data.id}`);
+  };
+
+  return (
+    <div className="card bg-base-100 w-full max-w-md shadow-xl">
+      <div className="card-body">
+        <h2 className="card-title">Únete a la cola</h2>
+
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Nombre</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Tu nombre"
+            className="input input-bordered w-full"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">¿Cuántos son?</span>
+          </label>
+          <input
+            type="number"
+            min="1"
+            placeholder="Número de personas"
+            className="input input-bordered w-full"
+            value={people}
+            onChange={(e) => setPeople(e.target.value)}
+          />
+        </div>
+
+        <button className="btn btn-primary mt-4" onClick={onJoin}>
+          Unirme a la cola
+        </button>
+      </div>
+    </div>
+  );
+}
