@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
-import { api } from "@/env";
 
 export default function QueueStatus({ guest }) {
   const onLeave = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(`${api}/leave_queue?id=${guest.id}`, {
+    const response = await fetch(`/api/leave_queue?id=${guest.id}`, {
       method: "DELETE",
     });
 

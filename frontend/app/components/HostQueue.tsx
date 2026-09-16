@@ -1,13 +1,10 @@
 "use client";
 
-import { api } from "@/env";
-
 export default function HostQueue({ queue, setQueue }) {
-  console.log("api", api);
   const onCall = async (e, id) => {
     e.preventDefault();
 
-    const response = await fetch(`${api}/call_guest?id=${id}`, {
+    const response = await fetch(`/api/call_guest?id=${id}`, {
       method: "PATCH",
     });
 
@@ -26,7 +23,7 @@ export default function HostQueue({ queue, setQueue }) {
   const onSit = async (e, id) => {
     e.preventDefault();
 
-    const response = await fetch(`${api}/sit_guest?id=${id}`, {
+    const response = await fetch(`/api/sit_guest?id=${id}`, {
       method: "DELETE",
     });
 

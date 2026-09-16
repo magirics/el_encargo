@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from "react";
 import HostQueue from "../components/HostQueue";
-import { api } from "@/env";
 
 export default function Page() {
   const [queue, setQueue] = useState([]);
 
   const getQueue = async () => {
-    const response = await fetch(`${api}/queue`);
+    const response = await fetch(`/api/queue`);
     if (!response.ok) {
       console.error("Failed to get queue");
       return;

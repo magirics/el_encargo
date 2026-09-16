@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { useState } from "react";
-import { api } from "@/env";
 
 export default function QueueForm() {
   const [name, setName] = useState("");
@@ -12,7 +11,7 @@ export default function QueueForm() {
     e.preventDefault();
 
     const response = await fetch(
-      `${api}/join_queue?name=${name}&people=${people}`,
+      `/api/join_queue?name=${name}&people=${people}`,
       {
         method: "POST",
       },

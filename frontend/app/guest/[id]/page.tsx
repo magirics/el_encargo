@@ -3,7 +3,6 @@
 import QueueStatus from "@/app/components/QueueStatus";
 import { redirect, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { api } from "@/env";
 
 export default function Page() {
   const params = useParams();
@@ -11,7 +10,7 @@ export default function Page() {
   const [guest, setGuest] = useState({ id: "", name: "", position: "" });
 
   const getGuest = async () => {
-    const response = await fetch(`${api}/guest?id=${id}`);
+    const response = await fetch(`/api/guest?id=${id}`);
     if (!response.ok) {
       console.error("Failed to get guest");
       return;
