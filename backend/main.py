@@ -6,6 +6,11 @@ from models import QueueEntry
 from time import time
 from random import randint
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+public_frontend_url = os.getenv("PUBLIC_FRONTEND_URL")
+print('frontend_url = ', public_frontend_url)
 
 Base.metadata.create_all(bind=engine)
 
@@ -14,7 +19,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        os.getenv("PUBLIC_FRONTEND_URL")
+        public_frontend_url
     ],
     allow_credentials=True,
     allow_methods=["*"],
