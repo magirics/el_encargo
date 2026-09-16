@@ -5,6 +5,7 @@ from database import get_db, engine, Base
 from models import QueueEntry
 from time import time
 from random import randint
+import os
 
 Base.metadata.create_all(bind=engine)
 
@@ -13,8 +14,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://192.168.1.36:3000",
-        "http://localhost:3000",
+        os.getenv("PUBLIC_FRONTEND_URL")
     ],
     allow_credentials=True,
     allow_methods=["*"],
