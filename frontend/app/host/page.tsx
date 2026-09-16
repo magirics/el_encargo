@@ -2,16 +2,13 @@
 
 import { useEffect, useState } from "react";
 import HostQueue from "../components/HostQueue";
+import { api } from "@/env";
 
 export default function Page() {
-  const [queue, setQueue] = useState([
-    { id: 1, name: "Carlos", people: 2 },
-    { id: 2, name: "María", people: 4 },
-    { id: 3, name: "Juan", people: 3 },
-  ]);
+  const [queue, setQueue] = useState([]);
 
   const getQueue = async () => {
-    const response = await fetch("http://localhost:8000/queue");
+    const response = await fetch(`${api}/queue`);
     if (!response.ok) {
       console.error("Failed to get queue");
       return;
@@ -32,8 +29,8 @@ export default function Page() {
   }, []);
 
   return (
-    <div>
-      <HostQueue queue={queue} />
+    <div className="w-screen min-h-screen flex flex-col items-center justify-center">
+      <HostQueue queue={queue} setQueue={setQueue} />
     </div>
   );
 }

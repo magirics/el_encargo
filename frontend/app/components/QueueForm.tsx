@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { useState } from "react";
+import { api } from "@/env";
 
 export default function QueueForm() {
   const [name, setName] = useState("");
@@ -11,7 +12,7 @@ export default function QueueForm() {
     e.preventDefault();
 
     const response = await fetch(
-      `http://localhost:8000/join_queue?name=${name}&people=${people}`,
+      `${api}/join_queue?name=${name}&people=${people}`,
       {
         method: "POST",
       },
@@ -19,13 +20,14 @@ export default function QueueForm() {
 
     const data = await response.json();
     console.log(data);
-    redirect(`/guest/id=${data.id}`);
+    redirect(`/guest/${data.id}`, 'push');
   };
 
   return (
-    <div className="card bg-base-100 w-full max-w-md shadow-xl">
+    <div className="card bg-base-100 w-full max-w-xs shadow-xl">
       <div className="card-body">
-        <h2 className="card-title">Únete a la cola</h2>
+        <h2 className="card-title">Restaurante</h2>
+        <h3 className="card-subtitle">Lista de espera</h3>
 
         <div className="form-control">
           <label className="label">
@@ -54,7 +56,10 @@ export default function QueueForm() {
           />
         </div>
 
-        <button className="btn btn-primary mt-4" onClick={onJoin}>
+        <button
+          className="btn btn-primary mt-4 bg-white text-black"
+          onClick={onJoin}
+        >
           Unirme a la cola
         </button>
       </div>
