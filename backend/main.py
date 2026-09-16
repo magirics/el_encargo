@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from database import get_db, engine, Base
 from models import QueueEntry
 from time import time
+from random import randint
 
 Base.metadata.create_all(bind=engine)
 
@@ -12,7 +13,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://192.168.1.38:3000",
+        "http://192.168.1.36:3000",
         "http://localhost:3000",
     ],
     allow_credentials=True,
@@ -44,10 +45,12 @@ def read_guest(id: int, db: Session = Depends(get_db)):
         QueueEntry.id == id
     ).first()
 
-    guest.position = db.query(QueueEntry).filter(
+    guest.queue_position = db.query(QueueEntry).filter(
         QueueEntry.time < guest.time,
         QueueEntry.status == "waiting"
     ).count()
+
+    guest.wait_time = 11 + guest.queue_position * 2
 
     return guest
 
@@ -69,8 +72,8 @@ def delete_leave(id: int, db: Session = Depends(get_db)):
 
 ### Host
 
-@app.delete("/call_guest")
-def delete_enter(id: int, db: Session = Depends(get_db)):
+@app.delete("/sit_guest")
+def sit_guest(id: int, db: Session = Depends(get_db)):
     queue_entry = db.query(QueueEntry).filter(QueueEntry.id == id).first()
     if not queue_entry:
         raise HTTPException(
@@ -82,6 +85,26 @@ def delete_enter(id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Queue entry deleted"}
+
+
+@app.patch("/call_guest")
+def call_guest(id: int, db: Session = Depends(get_db)):
+    queue_entry = (
+        db.query(QueueEntry)
+        .filter(QueueEntry.id == id)
+        .first()
+    )
+
+    if not queue_entry:
+        raise HTTPException(
+            status_code=404,
+            detail="Queue entry not found"
+        )
+
+    queue_entry.status = "called"
+
+    db.commit()
+    db.refresh(queue_entry)
 
 
 @app.get("/queue")
