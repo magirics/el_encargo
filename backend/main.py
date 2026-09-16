@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 public_frontend_url = os.getenv("PUBLIC_FRONTEND_URL")
-print('frontend_url = ', public_frontend_url)
+print('PUBLIC_FRONTEND_URL = ', public_frontend_url)
 
 Base.metadata.create_all(bind=engine)
 
