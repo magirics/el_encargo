@@ -38,10 +38,10 @@ pnpm install
 pnpm run dev
 ```
 
-Environment variables for the backend
+Environment variables for the frontend
 #### `frontend/.env`
 ```
-PUBLIC_FRONTEND_URL=API_URL=http://127.0.0.1:8000
+API_URL=http://127.0.0.1:8000
 ```
 
 Local: http://localhost:3000
